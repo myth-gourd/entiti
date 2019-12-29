@@ -22,6 +22,12 @@ import com.sun.tools.javac.util.Names;
 
 import myth.gourd.entiti.innotation.handler.CopyAnnotationHandler;
 
+
+/**
+ * 
+ * @author zhangjian
+ *
+ */
 @SupportedAnnotationTypes("myth.gourd.entiti.innotation.Copy")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @AutoService(Processor.class)
@@ -31,7 +37,6 @@ public class AnnotationProcessor extends AbstractProcessor {
 	private JavacTrees trees;
 	private TreeMaker treeMaker;
 	private Names names;
-
 	private Filer mFiler;
 
 	@Override
@@ -47,8 +52,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-		
-		CopyAnnotationHandler handler = new CopyAnnotationHandler(processingEnv,roundEnv,treeMaker,names);
+		CopyAnnotationHandler handler = new CopyAnnotationHandler(processingEnv, roundEnv, treeMaker, names);
 		handler.handle();
 		return true;
 	}
