@@ -1,4 +1,4 @@
-package myth.groud.entiti.schema;
+package myth.gourd.entiti.schema;
 
 import java.lang.annotation.Annotation;
 import java.util.List;

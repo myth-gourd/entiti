@@ -1,13 +1,13 @@
-package myth.groud.entiti.schema.reader;
+package myth.gourd.entiti.schema.reader;
 
 import javax.lang.model.element.Element;
 
 import com.sun.tools.javac.model.JavacElements;
 import com.sun.tools.javac.tree.JCTree;
 
-import myth.groud.entiti.schema.ClassStructure;
-import myth.groud.entiti.schema.FieldStructure;
-import myth.groud.entiti.schema.MethodStructure;
+import myth.gourd.entiti.schema.ClassStructure;
+import myth.gourd.entiti.schema.FieldStructure;
+import myth.gourd.entiti.schema.MethodStructure;
 
 public class ClassReader {
 	

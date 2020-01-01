@@ -1,4 +1,4 @@
-package myth.groud.entiti.util.jctree;
+package myth.gourd.entiti.util.jctree;
 
 import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
@@ -10,6 +10,15 @@ import com.sun.tools.javac.util.List;
 
 public class JCStatmentUtil {
 
+	
+	public static JCStatement thisFieldEqualValue(JCVariableDecl thisFieldVariableDecl, JCExpression value)
+	{
+		JCFieldAccess thisFieldAccess = JCFieldAccessUtil.thisFieldAccess(thisFieldVariableDecl);
+		JCAssign assing = JCTreeGloable.TREEMAKER.Assign(thisFieldAccess, value);
+		JCStatement statement = JCTreeGloable.TREEMAKER.Exec(assing);
+		return statement;
+	}
+	
 	public static JCStatement thisFieldEqualObjField(JCVariableDecl thisFieldVariableDecl, JCVariableDecl objVariableDecl, String objFieldName)
 	{
 		JCFieldAccess thisFieldAccess = JCFieldAccessUtil.thisFieldAccess(thisFieldVariableDecl);

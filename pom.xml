@@ -1,10 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>myth.gourd</groupId>
+	<groupId>com.github.myth-gourd</groupId>
 	<artifactId>entiti</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>myth-gourd-entiti</name>
+	<description>util for entiti</description>
+	<url>https://github.com/myth-gourd/entiti</url>
+	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>zhangjian</name>
+			<email>zj007ok@sina.com</email>
+			<organization>my-gourd</organization>
+		</developer>
+	</developers>
+	<scm>
+		<tag>master</tag>
+		<url>https://github.com/myth-gourd/entiti.git</url>
+		<connection>https://github.com/myth-gourd/entiti.git</connection>
+		<developerConnection>https://github.com/myth-gourd/</developerConnection>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>com.google.auto.service</groupId>
@@ -18,45 +41,149 @@
 			<scope>system</scope>
 			<systemPath>${java.home}/../lib/tools.jar</systemPath>
 		</dependency>
+		 <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+ 
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+ 
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
 	</dependencies>
-	<!-- <licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<scm>
-		<tag>master</tag>
-		<url>git@gitee.com:snowheart/dingtalk-robot.git</url>
-		<connection>scm:git:git@gitee.com:snowheart/dingtalk-robot.git</connection>
-		<developerConnection>scm:git:git@gitee.com:snowheart/dingtalk-robot.git</developerConnection>
-	</scm>
-	<developers>
-		<developer>
-			<name>zhangjian</name>
-			<email>zj007ok@sina.com</email>
-			<organization>my-gourd</organization>
-		</developer>
-	</developers> -->
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<!-- 不加这一句编译会报找不到processor的异常 -->
-					<compilerArgument>-proc:none</compilerArgument>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<!-- <build> <plugins> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+		<artifactId>maven-compiler-plugin</artifactId> <version>3.7.0</version> <configuration> 
+		<source>1.8</source> <target>1.8</target> 不加这一句编译会报找不到processor的异常 <compilerArgument>-proc:none</compilerArgument> 
+		</configuration> </plugin> </plugins> </build> -->
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>  
+                <activeByDefault>true</activeByDefault>  
+            </activation> 
+            <build>
+				<plugins>
+				<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+							<!-- 不加这一句编译会报找不到processor的异常 -->
+							<compilerArgument>-proc:none</compilerArgument>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<!-- Source -->
+					<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-source-plugin</artifactId> 
+						<version>2.2.1</version> <executions> <execution> <phase>package</phase> 
+						<goals> <goal>jar-no-fork</goal> </goals> </execution> </executions> </plugin> -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.2.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Javadoc -->
+					<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
+						<version>2.9.1</version> <executions> <execution> <phase>package</phase> 
+						<goals> <goal>jar</goal> </goals> </execution> </executions> </plugin> -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.9.1</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<additionalparam>-Xdoclint:none</additionalparam>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+
+					<!-- GPG -->
+					<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-gpg-plugin</artifactId> 
+						<version>1.5</version> <executions> <execution> <phase>verify</phase> <goals> 
+						<goal>sign</goal> </goals> </execution> </executions> </plugin> -->
+
+					<!--Maven GPG插件用于使用以下配置对组件进行签名 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+							<!-- 不加这一句编译会报找不到processor的异常 -->
+							<compilerArgument>-proc:none</compilerArgument>
+						</configuration>
+					</plugin>
+
+
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.6.7</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>sonatype-release</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+					
+				</plugins>
+			</build>
+			<!-- <distributionManagement> <snapshotRepository> <id>sonatype-snapshots</id> 
+				<url>                      https://oss.sonatype.org/content/repositories/snapshots/ 
+				                  </url> </snapshotRepository> <repository> <id>sonatype-release</id> 
+				<url>                      https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
+				                  </url> </repository> </distributionManagement> -->
+		</profile>
+	</profiles>
 </project>

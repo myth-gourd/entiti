@@ -1,4 +1,4 @@
-package myth.groud.entiti.schema;
+package myth.gourd.entiti.schema;
 
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 

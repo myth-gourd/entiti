@@ -1,4 +1,4 @@
-package myth.groud.entiti.schema.reader;
+package myth.gourd.entiti.schema.reader;
 
 import javax.lang.model.element.Element;
 
@@ -6,7 +6,7 @@ import com.sun.tools.javac.model.JavacElements;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 
-import myth.groud.entiti.schema.MethodStructure;
+import myth.gourd.entiti.schema.MethodStructure;
 
 public class MethodReader extends ElementReader {
 

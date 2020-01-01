@@ -1,4 +1,4 @@
-package myth.groud.entiti.schema.reader;
+package myth.gourd.entiti.schema.reader;
 
 import com.sun.tools.javac.model.JavacElements;
 
