@@ -1,5 +1,6 @@
 package myth.gourd.entiti.util.jctree;
 
+import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -22,6 +23,18 @@ public class JCFieldAccessUtil
 		JCIdent thisIdent = JCTreeGloable.TREEMAKER.Ident(JCTreeGloable.NAMES.fromString("this"));
 		JCFieldAccess thisFieldAccess = JCTreeGloable.TREEMAKER.Select(thisIdent, fieldName);
 		return thisFieldAccess;
+	}
+	
+	public static JCExpression memberAccess(String components) {
+        String[] componentArray = components.split("\\.");
+        Name first = JCTreeGloable.NAMES.fromString(componentArray[0]);
+        
+        JCExpression expr = JCTreeGloable.TREEMAKER.Ident(first);
+        for (int i = 1; i < componentArray.length; i++) {
+        	Name name = JCTreeGloable.NAMES.fromString(componentArray[i]);
+            expr = JCTreeGloable.TREEMAKER.Select(expr, name);
+        }
+        return expr;
 	}
 	
 	public static JCFieldAccess thisSetterMethodAccess(Name setterName)

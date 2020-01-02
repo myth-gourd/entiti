@@ -1,5 +1,7 @@
 package myth.gourd.entiti.innotation;
 
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -19,15 +21,13 @@ import org.slf4j.LoggerFactory;
 
 import com.google.auto.service.AutoService;
 import com.sun.tools.javac.api.JavacTrees;
-import com.sun.tools.javac.model.JavacElements;
 import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Names;
 
-import myth.gourd.entiti.innotation.handler.CopyHandler;
-import myth.gourd.entiti.innotation.handler.DefaultHandler;
-
+import myth.gourd.entiti.innotation.handler.Handler;
+import myth.gourd.entiti.util.jctree.JCTreeGloable;
 
 /**
  * 
@@ -40,7 +40,7 @@ import myth.gourd.entiti.innotation.handler.DefaultHandler;
 public class AnnotationProcessor extends AbstractProcessor {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AnnotationProcessor.class);
-	
+
 	private Messager messager;
 	private JavacTrees trees;
 	private TreeMaker treeMaker;
@@ -57,32 +57,48 @@ public class AnnotationProcessor extends AbstractProcessor {
 		this.treeMaker = TreeMaker.instance(context);
 		this.names = Names.instance(context);
 		
+		JCTreeGloable.ready(this.treeMaker, this.names);
 	}
+
+	private static final Set<Class<? extends Annotation>> MethodAnnotation = new HashSet<Class<? extends Annotation>>() {
+		private static final long serialVersionUID = 1L;
+
+		{
+			add(Copy.class);
+			add(Default.class);
+		}
+	};
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-		if(annotations.size() > 0)
-		{
-			//final JavacElements elementUtils = (JavacElements) processingEnv.getElementUtils();
-			
+		if (annotations.size() > 0) {
 			LOG.info("---------------------------------------------------------------------------");
 			LOG.info("Myth Gourd Innotation Process");
 			LOG.info("---------------------------------------------------------------------------");
-			
-			Set<? extends Element> copyElements = roundEnv.getElementsAnnotatedWith(Copy.class);
-			if (copyElements.size() > 0)
-			{
-				CopyHandler handler = new CopyHandler(processingEnv, roundEnv, treeMaker, names);
-				handler.handle(copyElements);
+			for (Class<? extends Annotation> annotation : MethodAnnotation) {
+				Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(annotation);
+				if (elements.size() > 0) {
+					try {
+						String handlerClassName = annotation.getSimpleName() + "Handler";
+						Class<?> handlerClass;
+						handlerClass = Class.forName("myth.gourd.entiti.innotation.handler." + handlerClassName);
+						Handler handler = (Handler)handlerClass.newInstance();
+						handler.setProcessingEnv(processingEnv);
+						handler.setAnnotationClass(annotation);
+						handler.setRoundEnv(roundEnv);
+						handler.handle();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
-			
-			Set<? extends Element> defaultElements = roundEnv.getElementsAnnotatedWith(Default.class);
-			if (defaultElements.size() > 0)
-			{
-				DefaultHandler handler = new DefaultHandler(processingEnv, roundEnv, treeMaker, names);
-				handler.handle(defaultElements);
-			}
-			
 		}
 		return true;
 	}
