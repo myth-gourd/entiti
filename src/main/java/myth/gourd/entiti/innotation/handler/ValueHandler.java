@@ -18,14 +18,34 @@ public class ValueHandler {
 	{
 		put("String", Type.String);
 		put("Integer", Type.Integer);
-		put("int", Type.Integer);
+		//put("int", Type.Integer);
 		put("Long", Type.Long);
-		put("long", Type.Long);
+		//put("long", Type.Long);
 		put("Double", Type.Double);
-		put("double", Type.Double);
+		//put("double", Type.Double);
 		put("Float", Type.Float);
-		put("float", Type.Float);
+		//put("float", Type.Float);
 	}};
+	
+	private static final Map<String, Object> defaultValue = new HashMap<String, Object>(){
+		private static final long serialVersionUID = 1L;
+	{
+		put("String", "");
+		put("Integer", 0);
+		//put("int", 0);
+		put("Long", 0L);
+		//put("long", 0L);
+		put("Double", 0);
+		//put("double", 0);
+		put("Float", 0f);
+		//put("float", 0f);
+	}};
+	
+	public static Object defValueByVarType(String varType)
+	{
+		Object value = defaultValue.get(varType);
+		return value;
+	}
 	
 	public static Object toObj(String varType, String value)
 	{

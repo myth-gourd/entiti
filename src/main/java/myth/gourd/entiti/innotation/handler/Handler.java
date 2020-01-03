@@ -15,8 +15,8 @@ import myth.gourd.entiti.schema.FieldStructure;
 
 public abstract class Handler {
 
-	protected ProcessingEnvironment processingEnv;
-	protected RoundEnvironment roundEnv;
+	private ProcessingEnvironment processingEnv;
+	private RoundEnvironment roundEnv;
 	protected JavacElements elementUtils;
 	
 	private Class<? extends Annotation> annotationClass;
@@ -45,6 +45,14 @@ public abstract class Handler {
 	public void setRoundEnv(RoundEnvironment roundEnv) {
 		this.roundEnv = roundEnv;
 	}
+	
+	public JavacElements getElementUtils() {
+		return elementUtils;
+	}
+
+	public void setElementUtils(JavacElements elementUtils) {
+		this.elementUtils = elementUtils;
+	}
 
 	public Handler(){
 		
@@ -61,7 +69,7 @@ public abstract class Handler {
 	
 	public abstract void handleElement(Element element);
 	
-	protected boolean fieldContainOneOfGroupSet(FieldStructure field, Set<String> groupSet)
+	protected boolean fieldHasOneGroup(FieldStructure field, Set<String> groupSet)
 	{
 		FieldGroup groupAnnotation = field.getAnnotation(FieldGroup.class);
 		if (groupAnnotation != null)

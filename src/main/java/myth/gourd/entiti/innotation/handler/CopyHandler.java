@@ -55,7 +55,7 @@ public class CopyHandler extends Handler
 			{
 				continue;
 			}
-			if (groupSet.size() > 0 && !fieldContainOneOfGroupSet(field, groupSet))
+			if (groupSet.size() > 0 && !fieldHasOneGroup(field, groupSet))
 			{
 				continue;
 			}
