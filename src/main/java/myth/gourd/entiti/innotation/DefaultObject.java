@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface DefaultObject {
-	boolean force() default false;
+	boolean fixed() default false;
 	String value() default "";
 }

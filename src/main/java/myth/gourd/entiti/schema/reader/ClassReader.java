@@ -39,6 +39,7 @@ public class ClassReader {
 				case VARIABLE:
 					FieldReader fReader = new FieldReader(this.javacElements);
 					FieldStructure fStructure = fReader.read(element);
+					fStructure.setClassStructure(clsStruct);
 					clsStruct.getFieldStructures().put(fStructure.getName(), fStructure);
 					break;
 				case METHOD:

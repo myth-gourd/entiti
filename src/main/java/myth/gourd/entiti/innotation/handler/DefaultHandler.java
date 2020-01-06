@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.sun.tools.javac.code.TypeTag;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCBinary;
-import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCLiteral;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -28,7 +27,7 @@ import myth.gourd.entiti.schema.ClassStructure;
 import myth.gourd.entiti.schema.FieldStructure;
 import myth.gourd.entiti.schema.reader.ClassReader;
 import myth.gourd.entiti.util.CollectionUtil;
-import myth.gourd.entiti.util.jctree.JCFieldAccessUtil;
+import myth.gourd.entiti.util.jctree.AccessUtil;
 import myth.gourd.entiti.util.jctree.JCIdentUtil;
 import myth.gourd.entiti.util.jctree.JCStatmentUtil;
 import myth.gourd.entiti.util.jctree.JCTreeGloable;
@@ -66,10 +65,14 @@ public class DefaultHandler extends Handler {
 		}
 		if (value != null) {
 			JCStatement settingExpression = this.setDefaultValueStatement(field, value);
-			JCBinary ifb = JCTreeGloable.TREEMAKER.Binary(JCTree.Tag.EQ, JCIdentUtil.ident(field.getName()),
-					JCTreeGloable.TREEMAKER.Literal(TypeTag.BOT, null));
-			JCStatement statement = JCTreeGloable.TREEMAKER.If(ifb, settingExpression, null);
-			return statement;
+			if (dv != null && dv.fixed()) {
+				return settingExpression;
+			} else {
+				JCBinary ifb = JCTreeGloable.TREEMAKER.Binary(JCTree.Tag.EQ, JCIdentUtil.ident(field.getName()),
+						JCTreeGloable.TREEMAKER.Literal(TypeTag.BOT, null));
+				JCStatement statement = JCTreeGloable.TREEMAKER.If(ifb, settingExpression, null);
+				return statement;
+			}
 		}
 		return null;
 	}
@@ -82,13 +85,28 @@ public class DefaultHandler extends Handler {
 	}
 
 	private JCStatement defaultObjectStatement(FieldStructure field) {
+
 		DefaultObject dv = field.getAnnotation(DefaultObject.class);
+		if (dv == null || dv.value() == null || "".equals(dv.value())) {
+			LOG.error("DefaultObject annotation must set property named value,class:"
+					+ field.getClassStructure().getName() + ",field: " + field.getName());
+		}
+		String methodPath = dv.value();
+		if (!methodPath.endsWith("()")) {
+			LOG.error("DefaultObject annotation value property must be a method, class:"
+					+ field.getClassStructure().getName() + ",value: " + methodPath);
+		}
 		JCVariableDecl fieldVariableDecl = field.getVariableDecl();
-		JCExpression method = JCFieldAccessUtil.memberAccess(dv.value());
-		JCMethodInvocation methodInvocation = JCTreeGloable.TREEMAKER.Apply(com.sun.tools.javac.util.List.nil(), method,
-				com.sun.tools.javac.util.List.nil());
-		JCStatement statement = JCStatmentUtil.thisFieldEqualValue(fieldVariableDecl, methodInvocation);
-		return statement;
+		JCMethodInvocation methodInvocation = AccessUtil.jcMethodInvocation(methodPath);
+		JCStatement settingExpression = JCStatmentUtil.thisFieldEqualValue(fieldVariableDecl, methodInvocation);
+		if (dv != null && dv.fixed()) {
+			return settingExpression;
+		} else {
+			JCBinary ifb = JCTreeGloable.TREEMAKER.Binary(JCTree.Tag.EQ, JCIdentUtil.ident(field.getName()),
+					JCTreeGloable.TREEMAKER.Literal(TypeTag.BOT, null));
+			JCStatement statement = JCTreeGloable.TREEMAKER.If(ifb, settingExpression, null);
+			return statement;
+		}
 	}
 
 	private ListBuffer<JCStatement> defaultStatements(ClassStructure clsStruct, Set<String> groupSet) {
