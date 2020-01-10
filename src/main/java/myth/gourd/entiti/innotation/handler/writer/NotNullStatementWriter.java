@@ -11,7 +11,7 @@ public class NotNullStatementWriter extends StatementWriter {
 		super(fieldStruc, code);
 	}
 
-	private static String VALIDATOR_METHOD_NAME = "validateNotNull";
+	private static final String VALIDATOR_METHOD_NAME = "validateNotNull";
 	
 	@Override
 	protected String getValidatorMethodName() {

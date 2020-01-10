@@ -15,7 +15,7 @@ public class OutOfSizeStatementWriter extends StatementWriter {
 		super(fieldStruc, code);
 	}
 
-	private static String VALIDATOR_METHOD_NAME = "validateSize";
+	private static final String VALIDATOR_METHOD_NAME = "validateSize";
 	
 	
 	@Override

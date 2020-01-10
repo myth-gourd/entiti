@@ -39,8 +39,13 @@ public abstract class StatementWriter {
 		if (fieldStruc.hasAnnotation(annotationClass)) {
 			Field fAnno = fieldStruc.getAnnotation(Field.class);
 			if (fAnno == null) {
-				LOG.error("must define Field annotation for ValidateNotNull annotation, field:" + fieldStruc.getName());
+				LOG.error("must define Field annotation for" + annotationClass.getName() + " annotation, field:" + fieldStruc.getName());
 			}
+			if (fAnno.title() == null)
+			{
+				LOG.error("must set title property for Field annotation, field:" + fieldStruc.getName());
+			}
+			
 			JCExpression method = AccessUtil.jcMethodExpression(VALIDATOR_CLASS_PATH, getValidatorMethodName());
 			JCExpression argValue = AccessUtil.jcExpression("this." + fieldStruc.getName());
 			JCExpression argCode = JCTreeGloable.TREEMAKER.Literal(code);

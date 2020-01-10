@@ -11,7 +11,7 @@ public class NotEmptyStatementWriter extends StatementWriter {
 		super(fieldStruc, code);
 	}
 
-	private static String VALIDATOR_METHOD_NAME = "validateNotEmpty";
+	private static final String VALIDATOR_METHOD_NAME = "validateNotEmpty";
 	
 	@Override
 	protected String getValidatorMethodName() {
