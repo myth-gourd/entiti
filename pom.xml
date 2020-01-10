@@ -3,11 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.myth-gourd</groupId>
 	<artifactId>entiti</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.8.SNAPSHOT</version>
 	<name>myth-gourd-entiti</name>
 	<description>util for entiti</description>
 	<url>https://github.com/myth-gourd/entiti</url>
-	
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -19,7 +18,7 @@
 		<developer>
 			<name>zhangjian</name>
 			<email>zj007ok@sina.com</email>
-			<organization>my-gourd</organization>
+			<organization>com.github.myth-gourd</organization>
 		</developer>
 	</developers>
 	<scm>
@@ -41,18 +40,18 @@
 			<scope>system</scope>
 			<systemPath>${JAVA_HOME}\lib/tools.jar</systemPath>
 		</dependency>
-		 <dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
 		</dependency>
- 
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.3</version>
 		</dependency>
- 
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
@@ -71,12 +70,12 @@
 	<profiles>
 		<profile>
 			<id>dev</id>
-			<activation>  
-                <activeByDefault>true</activeByDefault>  
-            </activation> 
-            <build>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
 				<plugins>
-				<plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
 						<configuration>
@@ -89,15 +88,10 @@
 				</plugins>
 			</build>
 		</profile>
-		
 		<profile>
 			<id>release</id>
 			<build>
 				<plugins>
-					<!-- Source -->
-					<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-source-plugin</artifactId> 
-						<version>2.2.1</version> <executions> <execution> <phase>package</phase> 
-						<goals> <goal>jar-no-fork</goal> </goals> </execution> </executions> </plugin> -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
@@ -111,10 +105,6 @@
 							</execution>
 						</executions>
 					</plugin>
-					<!-- Javadoc -->
-					<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-						<version>2.9.1</version> <executions> <execution> <phase>package</phase> 
-						<goals> <goal>jar</goal> </goals> </execution> </executions> </plugin> -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
@@ -131,13 +121,6 @@
 							</execution>
 						</executions>
 					</plugin>
-
-
-					<!-- GPG -->
-					<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-gpg-plugin</artifactId> 
-						<version>1.5</version> <executions> <execution> <phase>verify</phase> <goals> 
-						<goal>sign</goal> </goals> </execution> </executions> </plugin> -->
-
 					<!--Maven GPG插件用于使用以下配置对组件进行签名 -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -163,8 +146,6 @@
 							<compilerArgument>-proc:none</compilerArgument>
 						</configuration>
 					</plugin>
-
-
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
@@ -176,14 +157,18 @@
 							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						</configuration>
 					</plugin>
-					
 				</plugins>
 			</build>
-			<!-- <distributionManagement> <snapshotRepository> <id>sonatype-snapshots</id> 
-				<url>                      https://oss.sonatype.org/content/repositories/snapshots/ 
-				                  </url> </snapshotRepository> <repository> <id>sonatype-release</id> 
-				<url>                      https://oss.sonatype.org/service/local/staging/deploy/maven2/ 
-				                  </url> </repository> </distributionManagement> -->
+			<distributionManagement>
+				<snapshotRepository>
+					<id>sonatype-snapshots</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</snapshotRepository>
+				<repository>
+					<id>sonatype-release</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+			</distributionManagement>
 		</profile>
 	</profiles>
 </project>

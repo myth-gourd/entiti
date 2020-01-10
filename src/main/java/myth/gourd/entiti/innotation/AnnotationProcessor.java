@@ -66,6 +66,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 		{
 			add(Copy.class);
 			add(Default.class);
+			add(Validate.class);
 		}
 	};
 

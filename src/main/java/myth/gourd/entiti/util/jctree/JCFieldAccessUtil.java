@@ -10,18 +10,10 @@ import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 
+import myth.gourd.entiti.util.StringUtil;
+
 public class JCFieldAccessUtil 
 {
-	public static String getterMethodName(String fieldName)
-	{
-		return "get" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
-	}
-	
-	public static String setterMethodName(String fieldName)
-	{
-		return "set" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
-	}
-	
 	public static JCFieldAccess thisFieldAccess(Name fieldName)
 	{
 		JCIdent thisIdent = JCTreeGloable.TREEMAKER.Ident(JCTreeGloable.NAMES.fromString("this"));
@@ -93,7 +85,7 @@ public class JCFieldAccessUtil
 	
 	public static JCFieldAccess objGetterMethodAccess(String objName, String fieldName)
 	{
-		String getterName = getterMethodName(fieldName);
+		String getterName = StringUtil.getterMethodName(fieldName);
 		return objFieldAccess(objName, getterName);
 	}
 }

@@ -44,6 +44,34 @@ public class AccessUtil {
 		return jcMethodInvocation(parentExpr, name);
 	}
 
+	public static JCExpression jcMethodExpression(String classPath, String methodName)
+	{
+		JCExpression classExpr = jcExpression(classPath);
+		return jcFieldAccess(classExpr, methodName);
+	}
+	
+	public static JCExpression jcExpression(String path)
+	{
+		String[] names = path.split("\\.");
+		JCExpression expr = jcExpression(names);
+		return expr;
+	}
+	
+	public static JCExpression jcExpression(String[] names)
+	{
+		JCExpression expr = jcIdent(names[0]);
+		for (int i = 1; i < names.length; i++) {
+			String fieldName = names[i];
+			if (fieldName.endsWith("()")) {
+				String methodName = fieldName.substring(0, fieldName.length() - 2);
+				expr = jcMethodInvocation(expr, methodName);
+			} else {
+				expr = jcFieldAccess(expr, fieldName);
+			}
+		}
+		return expr;
+	}
+	
 	public static JCMethodInvocation jcMethodInvocation(String path) {
 		String[] names = path.split("\\.");
 		JCExpression expr = jcIdent(names[0]);

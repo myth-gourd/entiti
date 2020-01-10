@@ -11,6 +11,10 @@ import com.sun.tools.javac.util.List;
 public class JCStatmentUtil {
 
 	
+	
+	
+	
+	
 	public static JCStatement thisFieldEqualValue(JCVariableDecl thisFieldVariableDecl, JCExpression value)
 	{
 		JCFieldAccess thisFieldAccess = JCFieldAccessUtil.thisFieldAccess(thisFieldVariableDecl);
@@ -59,5 +63,7 @@ public class JCStatmentUtil {
 		JCStatement statement = JCTreeGloable.TREEMAKER.Exec(settermethodInvocation);
 		return statement;
 	}
+	
+	
 	
 }

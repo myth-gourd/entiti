@@ -24,6 +24,7 @@ import myth.gourd.entiti.schema.FieldStructure;
 import myth.gourd.entiti.schema.MethodStructure;
 import myth.gourd.entiti.schema.reader.ClassReader;
 import myth.gourd.entiti.util.CollectionUtil;
+import myth.gourd.entiti.util.StringUtil;
 import myth.gourd.entiti.util.jctree.JCFieldAccessUtil;
 import myth.gourd.entiti.util.jctree.JCStatmentUtil;
 import myth.gourd.entiti.util.jctree.JCTreeGloable;
@@ -71,7 +72,7 @@ public class CopyHandler extends Handler
 	
 	private boolean hasSetterFieldMethod(Map<String, MethodStructure> methods, String fieldName)
 	{
-		String setterName = JCFieldAccessUtil.setterMethodName(fieldName);
+		String setterName = StringUtil.setterMethodName(fieldName);
 		return methods.keySet().contains(setterName);
 	}
 	
@@ -96,8 +97,8 @@ public class CopyHandler extends Handler
 			for(int i=0;i<fields.size();i++)
 			{
 				String fieldName = fields.get(i).getName();
-				String thisSetterName = JCFieldAccessUtil.setterMethodName(fieldName);
-				String objGetterMethodName = JCFieldAccessUtil.getterMethodName(fieldName);
+				String thisSetterName = StringUtil.setterMethodName(fieldName);
+				String objGetterMethodName = StringUtil.getterMethodName(fieldName);
 				JCStatement statement = JCStatmentUtil.thisFieldSetterWithObjGetterMethod(thisSetterName, valuleObjectDecl, objGetterMethodName);
 				statementList.add(statement);
 			}

@@ -10,7 +10,7 @@ import javax.lang.model.element.Element;
 
 import com.sun.tools.javac.model.JavacElements;
 
-import myth.gourd.entiti.innotation.FieldGroup;
+import myth.gourd.entiti.innotation.Field;
 import myth.gourd.entiti.schema.FieldStructure;
 
 public abstract class Handler {
@@ -71,10 +71,10 @@ public abstract class Handler {
 	
 	protected boolean fieldHasOneGroup(FieldStructure field, Set<String> groupSet)
 	{
-		FieldGroup groupAnnotation = field.getAnnotation(FieldGroup.class);
-		if (groupAnnotation != null)
+		Field fieldAnnotation = field.getAnnotation(Field.class);
+		if (fieldAnnotation != null)
 		{
-			String[] fieldGroups = groupAnnotation.value().split(",");
+			String[] fieldGroups = fieldAnnotation.groups().split(",");
 			for(int i=0;i<fieldGroups.length;i++)
 			{
 				String group = fieldGroups[i];
