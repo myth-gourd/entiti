@@ -11,7 +11,10 @@ import javax.lang.model.element.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sun.tools.javac.code.Scope;
+import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.tree.JCTree;
+import com.sun.tools.javac.tree.JCTree.JCIdent;
 import com.sun.tools.javac.tree.JCTree.JCMethodDecl;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -25,7 +28,6 @@ import myth.gourd.entiti.schema.MethodStructure;
 import myth.gourd.entiti.schema.reader.ClassReader;
 import myth.gourd.entiti.util.CollectionUtil;
 import myth.gourd.entiti.util.StringUtil;
-import myth.gourd.entiti.util.jctree.JCFieldAccessUtil;
 import myth.gourd.entiti.util.jctree.JCStatmentUtil;
 import myth.gourd.entiti.util.jctree.JCTreeGloable;
 
@@ -85,6 +87,8 @@ public class CopyHandler extends Handler
 			return;
 		}
 		JCVariableDecl valuleObjectDecl = paramtersVariableDecl.get(0);
+		
+		
 		Set<String> groups = getGroups(element);
 		Element classElement = element.getEnclosingElement();
 		LOG.info("Class: " + classElement.toString());
@@ -99,8 +103,25 @@ public class CopyHandler extends Handler
 				String fieldName = fields.get(i).getName();
 				String thisSetterName = StringUtil.setterMethodName(fieldName);
 				String objGetterMethodName = StringUtil.getterMethodName(fieldName);
-				JCStatement statement = JCStatmentUtil.thisFieldSetterWithObjGetterMethod(thisSetterName, valuleObjectDecl, objGetterMethodName);
-				statementList.add(statement);
+				if (valuleObjectDecl.vartype != null && valuleObjectDecl.vartype.getTree() != null)
+				{
+					JCTree idTree = valuleObjectDecl.vartype.getTree();
+					if (idTree instanceof JCIdent)
+					{
+						JCIdent id = (JCIdent)idTree;
+						if (id.sym != null)
+						{
+							Scope scopeMember = id.sym.members();
+							Iterable<Symbol> iter = scopeMember.getElementsByName(JCTreeGloable.NAMES.fromString(objGetterMethodName));
+							if(iter.iterator().hasNext())
+							{
+								JCStatement statement = JCStatmentUtil.thisFieldSetterWithObjGetterMethod(thisSetterName, valuleObjectDecl, objGetterMethodName);
+								statementList.add(statement);
+							}
+						}
+						
+					}
+				}
 			}
 			JCTree.JCBlock body = JCTreeGloable.TREEMAKER.Block(0, statementList.toList());
 			jcMethodDecl.body = body;

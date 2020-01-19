@@ -34,24 +34,27 @@ public class ClassReader {
 		{
 			Element element = childrenElements.get(i);
 			JCTree tree = javacElements.getTree(element);
-			switch(tree.getKind())
+			if (tree != null)
 			{
-				case VARIABLE:
-					FieldReader fReader = new FieldReader(this.javacElements);
-					FieldStructure fStructure = fReader.read(element);
-					fStructure.setClassStructure(clsStruct);
-					clsStruct.getFieldStructures().put(fStructure.getName(), fStructure);
-					break;
-				case METHOD:
-					MethodReader mReader = new MethodReader(this.javacElements);
-					MethodStructure mStructure = mReader.read(element);
-					if (!mStructure.getName().equals("<init>"))
-					{
-						clsStruct.getMethodStructures().put(mStructure.getName(), mStructure);
-					}
-					break;
-				default:
-					break;
+				switch(tree.getKind())
+				{
+					case VARIABLE:
+						FieldReader fReader = new FieldReader(this.javacElements);
+						FieldStructure fStructure = fReader.read(element);
+						fStructure.setClassStructure(clsStruct);
+						clsStruct.getFieldStructures().put(fStructure.getName(), fStructure);
+						break;
+					case METHOD:
+						MethodReader mReader = new MethodReader(this.javacElements);
+						MethodStructure mStructure = mReader.read(element);
+						if (!mStructure.getName().equals("<init>"))
+						{
+							clsStruct.getMethodStructures().put(mStructure.getName(), mStructure);
+						}
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		return clsStruct;
