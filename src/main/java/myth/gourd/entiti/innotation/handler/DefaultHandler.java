@@ -28,7 +28,7 @@ import myth.gourd.entiti.schema.FieldStructure;
 import myth.gourd.entiti.schema.reader.ClassReader;
 import myth.gourd.entiti.util.CollectionUtil;
 import myth.gourd.entiti.util.jctree.AccessUtil;
-import myth.gourd.entiti.util.jctree.JCIdentUtil;
+import myth.gourd.entiti.util.jctree.JCExpressionUtil;
 import myth.gourd.entiti.util.jctree.JCStatmentUtil;
 import myth.gourd.entiti.util.jctree.JCTreeGloable;
 
@@ -68,7 +68,7 @@ public class DefaultHandler extends Handler {
 			if (dv != null && dv.fixed()) {
 				return settingExpression;
 			} else {
-				JCBinary ifb = JCTreeGloable.TREEMAKER.Binary(JCTree.Tag.EQ, JCIdentUtil.ident(field.getName()),
+				JCBinary ifb = JCTreeGloable.TREEMAKER.Binary(JCTree.Tag.EQ, JCExpressionUtil.jcIdent(field.getName()),
 						JCTreeGloable.TREEMAKER.Literal(TypeTag.BOT, null));
 				JCStatement statement = JCTreeGloable.TREEMAKER.If(ifb, settingExpression, null);
 				return statement;
@@ -102,7 +102,7 @@ public class DefaultHandler extends Handler {
 		if (dv != null && dv.fixed()) {
 			return settingExpression;
 		} else {
-			JCBinary ifb = JCTreeGloable.TREEMAKER.Binary(JCTree.Tag.EQ, JCIdentUtil.ident(field.getName()),
+			JCBinary ifb = JCTreeGloable.TREEMAKER.Binary(JCTree.Tag.EQ, JCExpressionUtil.jcIdent(field.getName()),
 					JCTreeGloable.TREEMAKER.Literal(TypeTag.BOT, null));
 			JCStatement statement = JCTreeGloable.TREEMAKER.If(ifb, settingExpression, null);
 			return statement;
@@ -130,7 +130,7 @@ public class DefaultHandler extends Handler {
 		return statementList;
 	}
 
-	private List<FieldStructure> analyseFields(ClassStructure clsStruct, Set<String> groupSet) {
+/*	private List<FieldStructure> analyseFields(ClassStructure clsStruct, Set<String> groupSet) {
 		List<FieldStructure> fields = new ArrayList<FieldStructure>();
 		Set<Entry<String, FieldStructure>> set = clsStruct.getFieldStructures().entrySet();
 		for (Entry<String, FieldStructure> entry : set) {
@@ -144,7 +144,7 @@ public class DefaultHandler extends Handler {
 			fields.add(field);
 		}
 		return fields;
-	}
+	}*/
 
 	@Override
 	public void handleElement(Element element) {
@@ -161,15 +161,14 @@ public class DefaultHandler extends Handler {
 		ClassReader clsReader = new ClassReader(elementUtils);
 		ClassStructure clsStructure = clsReader.read(classElement);
 
-		List<FieldStructure> fields = analyseFields(clsStructure, groups);
-
-		if (fields.size() > 0) {
+		//List<FieldStructure> fields = analyseFields(clsStructure, groups);
+		//if (fields.size() > 0) {
 			ListBuffer<JCStatement> statementList = defaultStatements(clsStructure, groups);
 			if (statementList.size() > 0) {
 				JCTree.JCBlock body = JCTreeGloable.TREEMAKER.Block(0, statementList.toList());
 				jcMethodDecl.body = body;
 			}
-		}
+		//}
 		LOG.info(jcMethodDecl.toString());
 	}
 }

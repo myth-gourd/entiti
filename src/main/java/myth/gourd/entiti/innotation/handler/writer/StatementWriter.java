@@ -14,6 +14,7 @@ import com.sun.tools.javac.util.ListBuffer;
 import myth.gourd.entiti.innotation.Field;
 import myth.gourd.entiti.schema.FieldStructure;
 import myth.gourd.entiti.util.jctree.AccessUtil;
+import myth.gourd.entiti.util.jctree.JCExpressionUtil;
 import myth.gourd.entiti.util.jctree.JCTreeGloable;	
 
 public abstract class StatementWriter {
@@ -46,8 +47,8 @@ public abstract class StatementWriter {
 				LOG.error("must set title property for Field annotation, field:" + fieldStruc.getName());
 			}
 			
-			JCExpression method = AccessUtil.jcMethodExpression(VALIDATOR_CLASS_PATH, getValidatorMethodName());
-			JCExpression argValue = AccessUtil.jcExpression("this." + fieldStruc.getName());
+			JCExpression method = JCExpressionUtil.jcMethodExpression(VALIDATOR_CLASS_PATH, getValidatorMethodName());
+			JCExpression argValue = JCExpressionUtil.jcExpression("this." + fieldStruc.getName());
 			JCExpression argCode = JCTreeGloable.TREEMAKER.Literal(code);
 			JCExpression argTitle = JCTreeGloable.TREEMAKER.Literal(fAnno.title());
 			

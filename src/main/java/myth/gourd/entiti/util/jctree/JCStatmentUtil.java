@@ -3,6 +3,7 @@ package myth.gourd.entiti.util.jctree;
 import com.sun.tools.javac.tree.JCTree.JCAssign;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
+import com.sun.tools.javac.tree.JCTree.JCIf;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.JCTree.JCStatement;
 import com.sun.tools.javac.tree.JCTree.JCVariableDecl;
@@ -10,11 +11,6 @@ import com.sun.tools.javac.util.List;
 
 public class JCStatmentUtil {
 
-	
-	
-	
-	
-	
 	public static JCStatement thisFieldEqualValue(JCVariableDecl thisFieldVariableDecl, JCExpression value)
 	{
 		JCFieldAccess thisFieldAccess = JCFieldAccessUtil.thisFieldAccess(thisFieldVariableDecl);
@@ -63,7 +59,4 @@ public class JCStatmentUtil {
 		JCStatement statement = JCTreeGloable.TREEMAKER.Exec(settermethodInvocation);
 		return statement;
 	}
-	
-	
-	
 }

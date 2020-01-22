@@ -88,7 +88,6 @@ public class CopyHandler extends Handler
 		}
 		JCVariableDecl valuleObjectDecl = paramtersVariableDecl.get(0);
 		
-		
 		Set<String> groups = getGroups(element);
 		Element classElement = element.getEnclosingElement();
 		LOG.info("Class: " + classElement.toString());
@@ -103,6 +102,8 @@ public class CopyHandler extends Handler
 				String fieldName = fields.get(i).getName();
 				String thisSetterName = StringUtil.setterMethodName(fieldName);
 				String objGetterMethodName = StringUtil.getterMethodName(fieldName);
+				
+				
 				if (valuleObjectDecl.vartype != null && valuleObjectDecl.vartype.getTree() != null)
 				{
 					JCTree idTree = valuleObjectDecl.vartype.getTree();
@@ -112,7 +113,10 @@ public class CopyHandler extends Handler
 						if (id.sym != null)
 						{
 							Scope scopeMember = id.sym.members();
-							Iterable<Symbol> iter = scopeMember.getElementsByName(JCTreeGloable.NAMES.fromString(objGetterMethodName));
+							LOG.debug("members");
+							LOG.debug(id.sym.members().toString());
+							LOG.debug("------");
+							Iterable<Symbol> iter = scopeMember.getElementsByName(JCTreeGloable.NAMES.fromString(fieldName));
 							if(iter.iterator().hasNext())
 							{
 								JCStatement statement = JCStatmentUtil.thisFieldSetterWithObjGetterMethod(thisSetterName, valuleObjectDecl, objGetterMethodName);

@@ -7,4 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface ValidateNotNull {}
+public @interface ValidateNotNull {
+	String condition() default "";
+}

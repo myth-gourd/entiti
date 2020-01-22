@@ -1,5 +1,7 @@
 package myth.gourd.entiti.errors.exception;
 
+import myth.gourd.entiti.errors.Error;
+
 public class ErrorException extends Exception{
 
 	/**
@@ -15,6 +17,12 @@ public class ErrorException extends Exception{
 	{
 		this.code = code;
 		this.message = message;
+	}
+	
+	public ErrorException(Error error)
+	{
+		this.setCode(error.getCode());
+		this.setMessage(error.getMessage());
 	}
 	
 	public String getCode() {

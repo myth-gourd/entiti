@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.myth-gourd</groupId>
 	<artifactId>entiti</artifactId>
-	<version>0.0.8.SNAPSHOT</version>
+	<version>0.0.9.SNAPSHOT</version>
 	<name>myth-gourd-entiti</name>
 	<description>util for entiti</description>
 	<url>https://github.com/myth-gourd/entiti</url>
